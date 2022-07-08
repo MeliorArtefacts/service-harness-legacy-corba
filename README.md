@@ -1,8 +1,8 @@
 # Melior Service Harness :: Legacy : CORBA
 <div style="display: inline-block;">
-<img src="https://img.shields.io/badge/version-2.3-yellow?style=for-the-badge"/>
-<img src="https://img.shields.io/badge/development-busy-yellow?style=for-the-badge"/>
-<img src="https://img.shields.io/badge/compatibility-spring_boot_2.4.5-yellow?style=for-the-badge"/>
+<img src="https://img.shields.io/badge/version-2.3-green?style=for-the-badge"/>
+<img src="https://img.shields.io/badge/production-ready-green?style=for-the-badge"/>
+<img src="https://img.shields.io/badge/compatibility-spring_boot_2.4.5-green?style=for-the-badge"/>
 </div>
 
 ## Artefact
@@ -20,9 +20,9 @@ Create a bean to instantiate the CORBA client.  The CORBA client uses connection
 ```
 @Bean("myclient")
 @ConfigurationProperties("myclient")
-public CorbaClient<_MyInterfaceStub, MyException> client() {
-    return CorbaClientBuilder.<_MyInterfaceStub, MyException>create()
-        .stub(c -> (_MyInterfaceStub) MyInterfaceHelper.narrow(c))
+public CorbaClient<MyInterface, MyException> client() {
+    return CorbaClientBuilder.<MyInterface, MyException>create()
+        .stub(c -> MyInterfaceHelper.narrow(c))
         .exception(e -> new RemotingException(e.myErrId, e.myErrText))
         .build();
 }
@@ -39,7 +39,7 @@ Wire in and use the CORBA client.
 ```
 @Autowired
 @Qualifier("myclient")
-private CorbaClient<_MyInterfaceStub, MyException> client;
+private CorbaClient<MyInterface, MyException> client;
 
 public void foo(Person person) throws RemotingException {
     client.execute((c) -> c.addPerson(person));
